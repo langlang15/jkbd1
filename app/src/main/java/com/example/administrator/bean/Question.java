@@ -7,15 +7,15 @@ package com.example.administrator.bean;
 public class Question {
 
     /**
-     * id : 758
-     * question : 年龄在60周岁以上的驾驶人多长时间提交一次身体条件证明？
-     * answer : 4
-     * item1 : 每3年
-     * item2 : 每2年
-     * item3 : 每6个月
-     * item4 : 每1年
-     * explains : 记住吧
-     * url :
+     * id : 9
+     * question : 这个标志是何含义？
+     * answer : 2
+     * item1 : 距有人看守铁路道口50米
+     * item2 : 距无人看守铁路道口100米
+     * item3 : 距有人看守铁路道口100米
+     * item4 : 距无人看守铁路道口50米
+     * explains : 一道红线是50米，二道100米。
+     * url : http://images.juheapi.com/jztk/c1c2subject1/9.jpg
      */
 
     private int id;
@@ -27,6 +27,8 @@ public class Question {
     private String item4;
     private String explains;
     private String url;
+
+    private String uaserAnswer;
 
     public void setId(int id) {
         this.id = id;
@@ -98,5 +100,12 @@ public class Question {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getUaserAnswer() {
+        return uaserAnswer;
+    }
+    public void  setUaserAnswer(String userAnswer){
+        this.uaserAnswer=userAnswer;
     }
 }

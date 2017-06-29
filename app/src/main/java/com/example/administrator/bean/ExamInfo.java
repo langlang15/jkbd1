@@ -4,7 +4,7 @@ package com.example.administrator.bean;
  * Created by Administrator on 2017/6/28.
  */
 
-public class test {
+public class ExamInfo {
     /**
      * subjectTitle : c1
      * uid : 1
