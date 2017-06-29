@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/main"
+        android:src="@mipmap/exam_title"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
 
@@ -161,11 +161,21 @@
             android:text="上一题"
             android:layout_alignParentLeft="true"/>
         <Button
+            android:id="@+id/btnnext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@mipmap/exam_next32x32"
             android:background="@null"
             android:text="下一题"
+            android:layout_alignParentRight="true"/>
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/exam_next32x32"
+            android:background="@null"
+            android:text="交卷"
+            android:layout_below="@+id/btnnext"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </LinearLayout>
