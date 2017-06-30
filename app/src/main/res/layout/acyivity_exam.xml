@@ -39,6 +39,7 @@
         android:textColor="#000"
         android:textSize="18dp"/>
     <TextView
+        android:id="@+id/tv_exam_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tool:text="这标志是何含义？"
@@ -47,6 +48,7 @@
         />
     </LinearLayout>
     <ImageView
+        android:id="@+id/im_exam_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tool:src="@mipmap/eaxm"
@@ -64,6 +66,7 @@
             android:textColor="#000"
             android:textSize="18dp"/>
         <TextView
+            android:id="@+id/tv_op1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tool:text="距有人看守铁路道口50米"
@@ -83,6 +86,7 @@
             android:textColor="#000"
             android:textSize="18dp"/>
         <TextView
+            android:id="@+id/tv_op2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tool:text="距无人看s守铁路道口100米"
@@ -102,6 +106,7 @@
             android:textColor="#000"
             android:textSize="18dp"/>
         <TextView
+            android:id="@+id/tv_op3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tool:text="距有人看守铁路道口100米"
@@ -121,6 +126,7 @@
             android:textColor="#000"
             android:textSize="18dp"/>
         <TextView
+            android:id="@+id/tv_op4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tool:text="距无人看守铁路道口50米"
