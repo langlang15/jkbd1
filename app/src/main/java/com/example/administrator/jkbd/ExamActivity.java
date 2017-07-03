@@ -1,14 +1,21 @@
 package com.example.administrator.jkbd;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.ExamApplication;
 import com.example.administrator.bean.ExamInfo;
 import com.example.administrator.bean.Question;
+import com.example.administrator.biz.ExamBiz;
+import com.example.administrator.biz.IExamBiz;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,15 +27,41 @@ import java.util.List;
 public class ExamActivity extends AppCompatActivity {
     TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4;
     ImageView mImageView;
+    IExamBiz biz;
+    boolean isLoadExamInfo=false;
+    boolean isLoadQuestions=false;
+    LoadQuestionBroadcast mLoadQuestionBroadcast;
+    LoadExamBroadcast mLoadExamBroadcast;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState ) {
          super.onCreate(savedInstanceState);
         setContentView(R.layout.acyivity_exam);
+        mLoadExamBroadcast=new LoadExamBroadcast();
+        mLoadQuestionBroadcast=new LoadQuestionBroadcast();
+        setListener();
         initView();
-        initData();
+        laodData();
+
+    }
+
+    private void setListener() {
+        registerReceiver(mLoadExamBroadcast,new IntentFilter(ExamApplication.LOAD_EXAM_INFO));
+        registerReceiver(mLoadQuestionBroadcast,new IntentFilter(ExamApplication.LOAD_EXAM_QUESTION));
+    }
+
+    private void laodData() {
+        biz=new ExamBiz();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                biz.beginExam();
+            }
+        }).start();
     }
 
     private void initView() {
+
         tvExamInfo = (TextView)findViewById(R.id.tv_examinfo);
         tvExamTitle = (TextView)findViewById(R.id.tv_exam_title);
         tvOp1 = (TextView)findViewById(R.id.tv_op1);
@@ -39,14 +72,17 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        ExamInfo examInfo=ExamApplication.getInstance().getExamInfo();
-        if(examInfo!=null){
-            showData(examInfo);
-        }
-        List<Question>examList=ExamApplication.getInstance().getmExamList();
-        if(examList!=null){
-            showQuestion(examList);
-        }
+       if(isLoadQuestions&&isLoadExamInfo){
+           ExamInfo examInfo=ExamApplication.getInstance().getExamInfo();
+           if(examInfo!=null){
+               showData(examInfo);
+           }
+           List<Question>examList=ExamApplication.getInstance().getmExamList();
+           if(examList!=null){
+               showQuestion(examList);
+           }
+       }
+
     }
 
     private void showQuestion(List<Question> examList) {
@@ -61,8 +97,44 @@ public class ExamActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mLoadExamBroadcast!=null){
+            unregisterReceiver(mLoadExamBroadcast);
+        }
+        if(mLoadQuestionBroadcast!=null){
+            unregisterReceiver(mLoadQuestionBroadcast);
+        }
+    }
+
     private void showData(ExamInfo examInfo) {
         tvExamInfo.setText(examInfo.toString());
 
+    }
+
+    class LoadExamBroadcast extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           boolean isSuccess= intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCESS,false);
+            Log.e("LoadExamBroadcast","LoadExamBroadcast,isSuccss"+isSuccess);
+            if(isSuccess){
+                isLoadExamInfo=true;
+            }
+            initData();
+        }
+    }
+    class LoadQuestionBroadcast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isSuccess = intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCESS, false);
+            Log.e("LoadQuestionBroadcast","LoadQuestionBroadcast,isSuccss"+isSuccess);
+            if (isSuccess) {
+                isLoadQuestions = true;
+            }
+            initData();
+        }
     }
 }
