@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,6 +30,7 @@ import com.squareup.picasso.Picasso;
 public class ExamActivity extends AppCompatActivity {
     TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo,tv03,tv04;
     CheckBox cb01,cb02,cb03,cb04;
+    CheckBox[] cbs=new CheckBox[4];
     LinearLayout layoutLoading,layout03,layout04;
     ProgressBar dialog;
     ImageView mImageView;
@@ -94,6 +96,10 @@ public class ExamActivity extends AppCompatActivity {
 
         tv03= (TextView) findViewById(R.id.tv_03);
         tv04= (TextView) findViewById(R.id.tv_04);
+        cbs[0]=cb01;
+        cbs[1]=cb02;
+        cbs[2]=cb03;
+        cbs[3]=cb04;
 
         layoutLoading.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +109,34 @@ public class ExamActivity extends AppCompatActivity {
                 tvload.setText("下载数据...");
             }
         });
+        cb01.setOnCheckedChangeListener(listener);
+        cb02.setOnCheckedChangeListener(listener);
+        cb03.setOnCheckedChangeListener(listener);
+        cb04.setOnCheckedChangeListener(listener);
     }
 
+    CompoundButton.OnCheckedChangeListener listener=new CompoundButton.OnCheckedChangeListener (){
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                int userAnswer=0;
+                switch (buttonView.getId()){
+                    case R.id.cb_01: userAnswer=1;break;
+                    case R.id.cb_02: userAnswer=2;break;
+                    case R.id.cb_03: userAnswer=3;break;
+                    case R.id.cb_04: userAnswer=4;break;
+                }
+                if(userAnswer>0){
+                    for(CheckBox cb:cbs){
+                        cb.setChecked(false);
+                    }
+                    cbs[userAnswer-1].setChecked(true);
+                }
+            }
+
+        }
+    };
     private void initData() {
         if(isLoadQuestionsRecevier&&isLoadExamInfoRecevier){
             if(isLoadQuestions&&isLoadExamInfo){
