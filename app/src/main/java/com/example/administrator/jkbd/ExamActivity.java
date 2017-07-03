@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,8 +27,9 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ExamActivity extends AppCompatActivity {
-    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo;
-    LinearLayout layoutLoading;
+    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo,tv03,tv04;
+    CheckBox cb01,cb02,cb03,cb04;
+    LinearLayout layoutLoading,layout03,layout04;
     ProgressBar dialog;
     ImageView mImageView;
     IExamBiz biz;
@@ -72,6 +74,9 @@ public class ExamActivity extends AppCompatActivity {
     private void initView() {
         dialog= (ProgressBar) findViewById(R.id.load_dialog);
         layoutLoading= (LinearLayout) findViewById(R.id.layout_loading);
+        layout03= (LinearLayout) findViewById(R.id.layout_03);
+        layout04= (LinearLayout) findViewById(R.id.layout_04);
+
         tvExamInfo = (TextView)findViewById(R.id.tv_examinfo);
         tvExamTitle = (TextView)findViewById(R.id.tv_exam_title);
         tvOp1 = (TextView)findViewById(R.id.tv_op1);
@@ -81,6 +86,14 @@ public class ExamActivity extends AppCompatActivity {
         mImageView= (ImageView) findViewById(R.id.im_exam_image);
         tvload= (TextView) findViewById(R.id.tv_load);
         tvNo= (TextView) findViewById(R.id.tv_exam_no);
+
+        cb01= (CheckBox) findViewById(R.id.cb_01);
+        cb02= (CheckBox) findViewById(R.id.cb_02);
+        cb03= (CheckBox) findViewById(R.id.cb_03);
+        cb04= (CheckBox) findViewById(R.id.cb_04);
+
+        tv03= (TextView) findViewById(R.id.tv_03);
+        tv04= (TextView) findViewById(R.id.tv_04);
 
         layoutLoading.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +136,14 @@ public class ExamActivity extends AppCompatActivity {
             tvOp3.setText(exam.getItem3());
             tvOp4.setText(exam.getItem4());
 
+            layout03.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+            cb03.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+
+
+            layout04.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+            cb04.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+
+
             if(exam.getUrl()!=null&&!exam.getUrl().equals(""))
             {
                 mImageView.setVisibility(View.VISIBLE);
@@ -131,6 +152,7 @@ public class ExamActivity extends AppCompatActivity {
             }else {
                 mImageView.setVisibility(View.GONE);
             }
+
 
         }
     }
