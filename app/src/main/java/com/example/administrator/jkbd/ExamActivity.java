@@ -21,14 +21,12 @@ import com.example.administrator.biz.ExamBiz;
 import com.example.administrator.biz.IExamBiz;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2017/6/29.
  */
 
 public class ExamActivity extends AppCompatActivity {
-    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload;
+    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo;
     LinearLayout layoutLoading;
     ProgressBar dialog;
     ImageView mImageView;
@@ -82,6 +80,7 @@ public class ExamActivity extends AppCompatActivity {
         tvOp4 = (TextView)findViewById(R.id.tv_op4);
         mImageView= (ImageView) findViewById(R.id.im_exam_image);
         tvload= (TextView) findViewById(R.id.tv_load);
+        tvNo= (TextView) findViewById(R.id.tv_exam_no);
 
         layoutLoading.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,10 +101,8 @@ public class ExamActivity extends AppCompatActivity {
                 if(examInfo!=null){
                     showData(examInfo);
                 }
-                List<Question>examList=ExamApplication.getInstance().getmExamList();
-                if(examList!=null){
-                    showQuestion(examList);
-                }
+                showQuestion( biz.getExam());
+
             }else {
                 layoutLoading.setEnabled(true);
                 dialog.setVisibility(View.GONE);//隐藏正在加载的图片
@@ -116,15 +113,25 @@ public class ExamActivity extends AppCompatActivity {
 
     }
 
-    private void showQuestion(List<Question> examList) {
-        Question exam= examList.get(0);
+    private void showQuestion(Question exam) {
+        Log.e("showQuestion","showQuestion,exam="+exam);
         if(exam!=null){
+            tvNo.setText(biz.getExamIndex());
             tvExamTitle.setText(exam.getQuestion());
             tvOp1.setText(exam.getItem1());
             tvOp2.setText(exam.getItem2());
             tvOp3.setText(exam.getItem3());
             tvOp4.setText(exam.getItem4());
-            Picasso.with(ExamActivity.this).load(exam.getUrl()).into(mImageView);
+
+            if(exam.getUrl()!=null&&!exam.getUrl().equals(""))
+            {
+                mImageView.setVisibility(View.VISIBLE);
+                Picasso.with(ExamActivity.this).load(exam.getUrl()).into(mImageView);
+
+            }else {
+                mImageView.setVisibility(View.GONE);
+            }
+
         }
     }
 
@@ -142,6 +149,14 @@ public class ExamActivity extends AppCompatActivity {
     private void showData(ExamInfo examInfo) {
         tvExamInfo.setText(examInfo.toString());
 
+    }
+
+    public void preExam(View view) {
+        showQuestion(biz.preQuestion());
+    }
+
+    public void next(View view) {
+        showQuestion(biz.nextQuestion());
     }
 
     class LoadExamBroadcast extends BroadcastReceiver{
