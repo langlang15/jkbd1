@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.ExamApplication;
@@ -29,7 +30,7 @@ import java.util.List;
 public class ExamActivity extends AppCompatActivity {
     TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload;
     LinearLayout layoutLoading;
-
+    ProgressBar dialog;
     ImageView mImageView;
     IExamBiz biz;
     boolean isLoadExamInfo=false;
@@ -51,6 +52,7 @@ public class ExamActivity extends AppCompatActivity {
         setListener();
         initView();
         laodData();
+        biz=new ExamBiz();
 
     }
 
@@ -60,7 +62,7 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void laodData() {
-        biz=new ExamBiz();
+        layoutLoading.setEnabled(false);//加载时不能点击
         new Thread(new Runnable(){
             @Override
             public void run() {
@@ -70,6 +72,7 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        dialog= (ProgressBar) findViewById(R.id.load_dialog);
         layoutLoading= (LinearLayout) findViewById(R.id.layout_loading);
         tvExamInfo = (TextView)findViewById(R.id.tv_examinfo);
         tvExamTitle = (TextView)findViewById(R.id.tv_exam_title);
@@ -79,6 +82,15 @@ public class ExamActivity extends AppCompatActivity {
         tvOp4 = (TextView)findViewById(R.id.tv_op4);
         mImageView= (ImageView) findViewById(R.id.im_exam_image);
         tvload= (TextView) findViewById(R.id.tv_load);
+
+        layoutLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                laodData();
+                dialog.setVisibility(View.VISIBLE);//隐藏正在加载的图片
+                tvload.setText("下载数据...");
+            }
+        });
     }
 
     private void initData() {
@@ -95,6 +107,8 @@ public class ExamActivity extends AppCompatActivity {
                     showQuestion(examList);
                 }
             }else {
+                layoutLoading.setEnabled(true);
+                dialog.setVisibility(View.GONE);//隐藏正在加载的图片
                 tvload.setText("下载失败，点击重新");
             }
 
