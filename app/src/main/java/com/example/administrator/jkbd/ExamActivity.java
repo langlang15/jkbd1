@@ -25,12 +25,15 @@ import com.example.administrator.biz.ExamBiz;
 import com.example.administrator.biz.IExamBiz;
 import com.squareup.picasso.Picasso;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by Administrator on 2017/6/29.
  */
 
 public class ExamActivity extends AppCompatActivity {
-    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo,tv03,tv04;
+    TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo,tv03,tv04,tvTime;
     CheckBox cb01,cb02,cb03,cb04;
     CheckBox[] cbs=new CheckBox[4];
     LinearLayout layoutLoading,layout03,layout04;
@@ -80,7 +83,7 @@ public class ExamActivity extends AppCompatActivity {
         layoutLoading= (LinearLayout) findViewById(R.id.layout_loading);
         layout03= (LinearLayout) findViewById(R.id.layout_03);
         layout04= (LinearLayout) findViewById(R.id.layout_04);
-
+        tvTime= (TextView) findViewById(R.id.tv_time);
         tvExamInfo = (TextView)findViewById(R.id.tv_examinfo);
         tvExamTitle = (TextView)findViewById(R.id.tv_exam_title);
         tvOp1 = (TextView)findViewById(R.id.tv_op1);
@@ -147,8 +150,10 @@ public class ExamActivity extends AppCompatActivity {
                 ExamInfo examInfo=ExamApplication.getInstance().getExamInfo();
                 if(examInfo!=null){
                     showData(examInfo);
+                    initTimer(examInfo);
                 }
                 showQuestion( biz.getExam());
+
 
             }else {
                 layoutLoading.setEnabled(true);
@@ -160,6 +165,41 @@ public class ExamActivity extends AppCompatActivity {
 
     }
 
+    private void initTimer(ExamInfo examInfo) {
+//        int sumTime=examInfo.getLimitTime()*60*1000;
+        int sumTime=60*1000;
+
+        final long overTime= (sumTime+(System.currentTimeMillis()));
+        final Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               long l= overTime-System.currentTimeMillis();
+                final long min= (l/1000/60);
+                final long sec= (l/1000%60);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTime.setText("剩余时间："+min+"分"+sec+"秒");
+                    }
+                });
+            }
+        },0,1000);//没1000毫秒刷新时间
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timer.cancel();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        commit(null);
+                    }
+                });
+            }
+        },sumTime);
+    }
+
+
     private void showQuestion(Question exam) {
         Log.e("showQuestion","showQuestion,exam="+exam);
         if(exam!=null){
@@ -169,15 +209,10 @@ public class ExamActivity extends AppCompatActivity {
             tvOp2.setText(exam.getItem2());
             tvOp3.setText(exam.getItem3());
             tvOp4.setText(exam.getItem4());
-
             layout03.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
             cb03.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
-
-
             layout04.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
             cb04.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
-
-
             if(exam.getUrl()!=null&&!exam.getUrl().equals(""))
             {
                 mImageView.setVisibility(View.VISIBLE);
