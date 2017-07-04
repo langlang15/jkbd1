@@ -185,6 +185,11 @@ public class ExamActivity extends AppCompatActivity {
                 mImageView.setVisibility(View.GONE);
             }
             resetOption();
+           String userAnswer =exam.getUaserAnswer();
+            if(userAnswer!=null&& !userAnswer.equals("")){
+               int userCB= Integer.parseInt(userAnswer)-1;
+                cbs[userCB].setChecked(true);
+            }
 
         }
     }
