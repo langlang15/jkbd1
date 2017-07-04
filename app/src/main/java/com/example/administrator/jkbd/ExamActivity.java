@@ -194,6 +194,15 @@ public class ExamActivity extends AppCompatActivity {
             cb.setChecked(false);
         }
     }
+    private  void saveUserAnswer(){
+
+        for(int i=0;i<cbs.length;i++){
+            if(cbs[i].isChecked()){
+                biz.getExam().setUaserAnswer(String.valueOf(i+1));
+                return;
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -212,10 +221,12 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     public void preExam(View view) {
+        saveUserAnswer();
         showQuestion(biz.preQuestion());
     }
 
     public void next(View view) {
+        saveUserAnswer();
         showQuestion(biz.nextQuestion());
     }
 
