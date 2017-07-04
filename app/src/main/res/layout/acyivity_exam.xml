@@ -220,6 +220,7 @@
             android:drawableTop="@mipmap/exam_commit32x32"
             android:background="@null"
             android:text="交卷"
+            android:onClick="commit"
             android:layout_below="@+id/btnnext"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
