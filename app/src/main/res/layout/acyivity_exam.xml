@@ -217,7 +217,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@mipmap/exam_next32x32"
+            android:drawableTop="@mipmap/exam_commit32x32"
             android:background="@null"
             android:text="交卷"
             android:layout_below="@+id/btnnext"
