@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ import com.example.administrator.bean.ExamInfo;
 import com.example.administrator.bean.Question;
 import com.example.administrator.biz.ExamBiz;
 import com.example.administrator.biz.IExamBiz;
+import com.example.administrator.view.QuestionAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.Timer;
@@ -34,9 +36,11 @@ import java.util.TimerTask;
 
 public class ExamActivity extends AppCompatActivity {
     TextView tvExamInfo,tvExamTitle,tvOp1,tvOp2,tvOp3,tvOp4,tvload,tvNo,tv03,tv04,tvTime;
+    Gallery mGallery;
     CheckBox cb01,cb02,cb03,cb04;
     CheckBox[] cbs=new CheckBox[4];
     LinearLayout layoutLoading,layout03,layout04;
+    QuestionAdapter mAdapter;
     ProgressBar dialog;
     ImageView mImageView;
     IExamBiz biz;
@@ -99,6 +103,7 @@ public class ExamActivity extends AppCompatActivity {
         cb03= (CheckBox) findViewById(R.id.cb_03);
         cb04= (CheckBox) findViewById(R.id.cb_04);
 
+        mGallery= (Gallery) findViewById(R.id.gallery);
         tv03= (TextView) findViewById(R.id.tv_03);
         tv04= (TextView) findViewById(R.id.tv_04);
         cbs[0]=cb01;
@@ -152,6 +157,7 @@ public class ExamActivity extends AppCompatActivity {
                     showData(examInfo);
                     initTimer(examInfo);
                 }
+                initGallery();
                 showQuestion( biz.getExam());
 
 
@@ -163,6 +169,11 @@ public class ExamActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void initGallery() {
+        mAdapter=new QuestionAdapter(this);
+        mGallery.setAdapter(mAdapter);
     }
 
     private void initTimer(ExamInfo examInfo) {

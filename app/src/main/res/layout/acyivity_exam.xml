@@ -222,6 +222,16 @@
             android:text="下一题"
             android:onClick="next"
             android:layout_alignParentRight="true"/>
+
+        <Gallery
+            android:spacing="10dp"
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </Gallery>
+
         <Button
 
             android:layout_width="wrap_content"
