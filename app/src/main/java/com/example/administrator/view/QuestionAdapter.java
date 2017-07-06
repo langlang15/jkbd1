@@ -49,10 +49,12 @@ public class QuestionAdapter extends BaseAdapter {
 
 
         String ua=examList.get(position).getUaserAnswer();
+
+        String ra=examList.get(position).getAnswer();
         if(ua!=null&&!ua.equals("")){
-            ivQuestion.setImageResource(R.mipmap.answer24x24);
+            ivQuestion.setImageResource(ua.equals(ra)?R.mipmap.answer24x24:R.mipmap.error);
         }else{
-            ivQuestion.setImageResource(R.mipmap.ques24x24);
+            ivQuestion.setImageResource(R.mipmap.unknow);
         }
 
         tvNo.setText("第"+(position+1)+"题");
